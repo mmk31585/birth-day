@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انیمیشن نوشتن با Tailwind</title>
+    <link href="./style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        /* تنظیم فونت اختصاصی */
+        .font-vazir {
+            font-family: 'Vazir', sans-serif;
+        }
+
+        /* انیمیشن چشمک‌زن برای نشانگر تایپ */
+        @keyframes blink {
+
+            from,
+            to {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .animate-blink {
+            animation: blink 0.75s step-end infinite;
+        }
+
+        /* پرده شروع */
+        .curtain {
+            position: fixed;
+            inset: 0;
+            background-color: #1f2937;
+            z-index: 50;
+            animation: slideOut 1.5s ease-in-out forwards;
+        }
+
+        @keyframes slideOut {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* انیمیشن بادکنک */
+        .balloon {
+            position: fixed;
+            font-size: 2.5rem;
+            animation: floatUp linear forwards;
+        }
+
+        /* انیمیشن بالا رفتن بادکنک */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-150vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gradient-to-r from-blue-300 to-purple-400 min-h-screen flex flex-col items-center justify-center relative font-vazir overflow-hidden">
+    <div id="curtain" class="curtain"></div>
+
+    <div class="mb-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">!تولدت مبارک رفیق</h1>
+        <p class="text-lg text-gray-600 mb-4">.امیدوارم روزت سرشار از شادی، لبخند و لحظات ناب باشد</p>
+        <div class="text-2xl text-gray-700" id="text-container">
+            <span class="cursor inline-block  animate-blink">|</span>
+            <span id="text"></span>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">پخش‌ کننده آهنگ</h2>
+        <div class="flex justify-center gap-4 mb-4">
+            <button onclick="playAudio()"
+                class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-md">
+                پخش
+            </button>
+            <button onclick="pauseAudio()"
+                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-md">
+                توقف
+            </button>
+        </div>
+        <audio id="myAudio" src="./Anushirvan Rohani - Tavalodet Mobarak (128).mp3" preload="auto"
+            class="w-full mx-auto" autoplay></audio>
+        <p class="text-gray-600 text-center text-sm mt-2">!لذت ببر از موسیقی</p>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>
