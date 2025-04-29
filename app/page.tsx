@@ -76,7 +76,7 @@ export default function Home() {
           >
             {playMusic ? '🔊' : '🔇'}
           </button>
-          <ReactHowler src="/birthday-tune.mp3" playing={playMusic} loop={true} volume={0.3} />
+          <ReactHowler src="./Anushirvan Rohani - Tavalodet Mobarak (128).mp3" playing={playMusic} loop={true} volume={0.3} />
 
           <motion.h1
           initial={{ opacity: 0, y: -100 }}
