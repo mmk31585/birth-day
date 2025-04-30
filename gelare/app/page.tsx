@@ -9,9 +9,6 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import type { Engine, Container } from "tsparticles-engine";
 
-// Dynamically import ReactHowler for audio playback
-const ReactHowler = dynamic(() => import('react-howler'), { ssr: false });
-
 export default function Home() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [playMusic, setPlayMusic] = useState(true);
@@ -98,16 +95,7 @@ export default function Home() {
             {playMusic ? '🔊' : '🔇'}
           </button>
 
-          {/* Audio Player */}
-          {typeof window !== 'undefined' && (
-            <ReactHowler
-              src="/Anushirvan Rohani - Tavalodet Mobarak (128).mp3" // Ensure the file is in the public folder
-              playing={playMusic}
-              loop={true}
-              volume={0.3}
-              onLoadError={(id, error) => console.error("Audio load error:", error)}
-            />
-          )}
+          
 
           {/* Title */}
           <motion.h1
