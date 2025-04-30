@@ -4,38 +4,53 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { loadFull } from 'tsparticles';
 import { Sparkles, BookOpenCheck, Gift, Star } from 'lucide-react';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import type { Engine, Container } from "tsparticles-engine";
 
-const Particles = dynamic(() => import('react-tsparticles').then(mod => mod.Particles || mod), { ssr: false });
+// Dynamically import ReactHowler for audio playback
 const ReactHowler = dynamic(() => import('react-howler'), { ssr: false });
 
 export default function Home() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [playMusic, setPlayMusic] = useState(true);
+
+  // Quotes for the rotating text
   const quotes = [
     'هر صبح، آغازی باشکوه برای رویاهای تو باشه 🌞',
     'تولدت مبارک؛ با دلِ قرص و لبخند بدرخش ✨'
   ];
 
+  // Motivational message
   const motivation =
     'هر روز فرصتی تازه‌ست برای درخشیدن. حتی اگر مسیر سخت باشه، تو قوی‌تر از تمام چالش‌هاتی. ✨ با امید و لبخند پیش برو!';
 
+  // Rotate quotes every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => setQuoteIndex(i => (i + 1) % quotes.length), 5000);
+
+    // Trigger confetti on load
     if (typeof window !== 'undefined') {
-      import('canvas-confetti').then(confettiModule => {
-        confettiModule.default({ particleCount: 400, spread: 200, origin: { y: 0.6 } });
-      });
+      import('canvas-confetti')
+        .then(confettiModule => {
+          confettiModule.default({ particleCount: 400, spread: 200, origin: { y: 0.6 } });
+        })
+        .catch(err => console.error("Failed to load confetti module:", err));
     }
+
     return () => clearInterval(interval);
   }, [quotes.length]);
 
-  const particlesInit = useCallback(async engine => {
-    await loadFull(engine);
+  // Initialize particles
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(encodeURIngine);
   }, []);
 
-  const particlesLoaded = useCallback(async container => {}, []);
+  const particlesLoaded = useCallback(async (container?: Container) => {
+    if (!container) return;
+    // Handle particles loaded logic if needed
+  }, []);
 
   return (
     <>
@@ -45,6 +60,7 @@ export default function Home() {
         <link href="https://cdn.jsdelivr.net/gh/rastikerdar/bnazanin-font@master/dist/font-face.css" rel="stylesheet" />
       </Head>
       <div className="relative overflow-hidden">
+        {/* Particle Background */}
         <Particles
           id="tsparticles"
           init={particlesInit}
@@ -58,35 +74,52 @@ export default function Home() {
               links: { enable: true, distance: 150, color: '#e879f9' },
               move: { enable: true, speed: 1.5 },
               size: { value: { min: 1, max: 3 } },
-              number: { density: { enable: true, area: 800 }, value: 90 }
+              number: {
+                value: 90,
+                density: {
+                  enable: true,
+                  width: 800,
+                  height: 800
+                }
+              }
             },
             detectRetina: true
           }}
           className="absolute inset-0"
         />
+
+        {/* Main Content */}
         <main dir="rtl" className="relative font-bnazanin min-h-screen flex flex-col items-center text-right text-rose-900 p-4 space-y-12 bg-gradient-to-b from-rose-50 via-pink-100 to-fuchsia-100">
+          {/* Music Toggle Button */}
           <button
             onClick={() => setPlayMusic(!playMusic)}
-            className={`absolute top-5 left-5 p-2 rounded-full shadow-lg transition-all duration-500 ${
-              playMusic ? 'bg-white/80 animate-pulse' : 'bg-white/50'
-            }`}
+            className={`absolute top-5 left-5 p-2 rounded-full shadow-lg transition-all duration-500 ${playMusic ? 'bg-white/80 animate-pulse' : 'bg-white/50'}`}
           >
             {playMusic ? '🔊' : '🔇'}
           </button>
 
+          {/* Audio Player */}
           {typeof window !== 'undefined' && (
-            <ReactHowler src="/birthday-tune.mp3" playing={playMusic} loop={true} volume={0.3} />
+            <ReactHowler
+              src="/Anushirvan Rohani - Tavalodet Mobarak (128).mp3" // Ensure the file is in the public folder
+              playing={playMusic}
+              loop={true}
+              volume={0.3}
+              onLoadError={(id, error) => console.error("Audio load error:", error)}
+            />
           )}
 
+          {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
             className="text-5xl md:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-fuchsia-600 drop-shadow-2xl"
           >
-            🎉 تولدت مبارک،خانوم گلاره 🎉
+            🎉 تولدت مبارک،خانوم کاظمی 🎉
           </motion.h1>
 
+          {/* Rotating Quotes */}
           <motion.div
             key={quoteIndex}
             initial={{ opacity: 0 }}
@@ -98,6 +131,7 @@ export default function Home() {
             {quotes[quoteIndex]}
           </motion.div>
 
+          {/* Motivational Message */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -111,6 +145,7 @@ export default function Home() {
             <p className="text-xl text-rose-800 leading-relaxed">{motivation}</p>
           </motion.div>
 
+          {/* Book Recommendations */}
           <motion.section
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -133,6 +168,7 @@ export default function Home() {
             </ul>
           </motion.section>
 
+          {/* Gift Message */}
           <motion.section
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
