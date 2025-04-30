@@ -5,9 +5,10 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, BookOpenCheck, Gift, Star } from 'lucide-react';
-import Particles from "react-tsparticles";
+import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
-import type { Engine, Container } from "tsparticles-engine";
+import type { Engine, Container } from "@tsparticles/engine";
+
 
 export default function Home() {
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -41,8 +42,9 @@ export default function Home() {
 
   // Initialize particles
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadFull(encodeURIngine);
+    await loadFull(engine);
   }, []);
+  
 
   const particlesLoaded = useCallback(async (container?: Container) => {
     if (!container) return;
@@ -60,28 +62,29 @@ export default function Home() {
         {/* Particle Background */}
         <Particles
           id="tsparticles"
-          init={particlesInit}
-          loaded={particlesLoaded}
           options={{
-            background: { color: { value: 'transparent' } },
-            fpsLimit: 60,
-            interactivity: { events: { onClick: { enable: true, mode: 'push' } } },
-            particles: {
-              color: { value: '#fb7185' },
-              links: { enable: true, distance: 150, color: '#e879f9' },
-              move: { enable: true, speed: 1.5 },
-              size: { value: { min: 1, max: 3 } },
-              number: {
-                value: 90,
-                density: {
-                  enable: true,
-                  width: 800,
-                  height: 800
+            ...{
+              background: { color: { value: 'transparent' } },
+              fpsLimit: 60,
+              interactivity: { events: { onClick: { enable: true, mode: 'push' } } },
+              particles: {
+                color: { value: '#fb7185' },
+                links: { enable: true, distance: 150, color: '#e879f9' },
+                move: { enable: true, speed: 1.5 },
+                size: { value: { min: 1, max: 3 } },
+                number: {
+                  value: 90,
+                  density: {
+                    enable: true,
+                    width: 800,
+                    height: 800
+                  }
                 }
-              }
-            },
-            detectRetina: true
+              },
+              detectRetina: true
+            }
           }}
+          
           className="absolute inset-0"
         />
 
